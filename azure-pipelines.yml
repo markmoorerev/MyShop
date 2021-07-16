@@ -1,0 +1,116 @@
+
+# pool:
+#   vmImage: ubuntu-latest
+
+# steps:
+# - script: echo Hello, world!
+#   displayName: 'Run a one-line script'
+
+# - script: |
+#     echo Add other tasks to build, test, and deploy your project.
+#     echo See https://aka.ms/yaml
+#   displayName: 'Run a multi-line script'
+
+# #below is the tutorial
+# #Ex: key:value pairs
+# app: rpsApp
+# port: 8000
+
+# #Ex: Make an object by indenting the props and giving it a title 
+# #an object 
+# myObj:
+# #a property of the objec
+#   app: rpsApp
+#   Port: 8000
+
+# #Ex: make a list 
+# #title of the list 
+# myList1:
+# #three list items
+#   - “first thing”
+#   - “second thing”
+#   - “third thing”
+
+# #Ex: another syntax for lists 
+# myList2: [“first thing”, “second thing”, “third thing”] 
+
+# #EX: make a list of objects 
+# #The list items can be indented or not but they have to have the dash (-) 
+# myObjs:
+# #an object
+#   - app: rpsApp
+#     port: 8000
+#     Version: 2.0
+#   - app: AngularApp
+#     port: 5000
+#     Version: 1.0
+
+#Ex: a YAML for K8s 
+# apiVersion: v1
+# kind: Pod
+# #object
+# metaData:
+#   name: nginx	#property 
+#   #property that is an object 
+#   labels:
+#   #property of the property
+#     app: nginx
+# #another object 
+# spec:
+# #a list 
+#   containers:
+#   - name: nginx –container
+#     Image: nginx
+#     #a list of one item
+#     ports:
+#     - containerPort: 80
+#     volumeMounts: 80
+#   - name: nginx-vol
+#     ColumeMounts:
+#   - name: nginx-vol
+#     mountPath: /usr/nginx/html
+
+# amultilinestring: |
+#   this is a string that
+#   occupies more than
+#   one line in the 
+#   yaml.
+
+
+#list of variables
+variables:
+- var1: myvar1
+- var2: maysecondvar
+#give a name and value explicitely
+- name: vmImage
+  value: 'vs2017-windowsSomething'
+
+stages:
+- stage: Build
+  displayName: it's a stage
+  jobs:
+  - template: thisyaml.yml
+    parameters:
+      buildConfiguration: 'release'
+      buildPlatForm: 'Any CPU'
+      vmImage: $(vmImage)
+
+- stage: Deploy
+  displayName: it's a deploy stage
+  jobs:
+  - template: thisyaml.yml
+    parameters:
+      buildConfiguration: 'release'
+      buildPlatForm: 'Any CPU'
+      vmImage: $(vmImage)
+
+# By default, before a stage runs, a pipeline requires the 
+# previous stage to be successfully completed and 
+# doesn’t need the “dependsOn: [stage]” statement. 
+
+# A job is the smallest unit of work that can be scheduled to run, 
+# and runs 1 or more steps, or tasks.
+
+# Stages are larger collections of jobs, for example “build this code”, 
+# and “deploy this project”. If stages aren’t defined, it’s 
+# assumed that everything is in just one stage.
